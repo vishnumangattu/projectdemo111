@@ -1,0 +1,42 @@
+name: Auto Commit
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Daily at midnight
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Run Python script
+      run: python commit.py
+
+    - name: Check for changes
+      run: |
+        if [[ -n "$(git status --porcelain)" ]]; then
+          echo "Changes detected, committing..."
+        else
+          echo "No changes to commit."
+          exit 0
+        fi
+
+    - name: Commit and push changes
+      if: success()
+      env:
+        TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      run: |
+        git config --local user.email "souravsundar31@gmail.com"
+        git config --local user.name "souravsundar"
+        git add log.txt
+        git commit -m "Automated contribution"
+        git push https://$TOKEN@github.com/souravsundar/flipkart.git
