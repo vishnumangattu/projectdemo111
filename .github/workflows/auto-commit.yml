@@ -35,8 +35,8 @@ jobs:
       env:
         TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       run: |
-        git config --local user.email "souravsundar31@gmail.com"
-        git config --local user.name "souravsundar"
+        git config --local user.email "vishnumangattu03@gmail.com"
+        git config --local user.name "vishnumangattu"
         git add log.txt
         git commit -m "Automated contribution"
         git push https://$TOKEN@github.com/souravsundar/flipkart.git
